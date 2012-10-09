@@ -6,15 +6,15 @@ import urlparse
 import json
 import logging
 
-BAIDU_API_DOMAIN = 'openapi.baidu.com'
-BAIDU_AUTHORIZE_URL = 'https://%s/oauth/2.0/authorize' % BAIDU_API_DOMAIN
-BAIDU_TOKEN_URL = 'https://%s/oauth/2.0/token' % BAIDU_API_DOMAIN
+API_DOMAIN = 'openapi.baidu.com'
+AUTHORIZE_URL = 'https://%s/oauth/2.0/authorize' % API_DOMAIN
+TOKEN_URL = 'https://%s/oauth/2.0/token' % API_DOMAIN
 
 logger = logging.getLogger('baidu_api')
 
 class BaiduAPI(object):
     """
-    封装了百度的API
+    封装API
     """
 
     _appid = None
@@ -45,7 +45,7 @@ class BaiduAPI(object):
 
         enc_params = urllib.urlencode(params)
 
-        url = '%s?%s' % (BAIDU_AUTHORIZE_URL, enc_params)
+        url = '%s?%s' % (AUTHORIZE_URL, enc_params)
 
         return url
 
@@ -64,7 +64,7 @@ class BaiduAPI(object):
         if kwargs:
             params.update(kwargs)
 
-        url_parts = urlparse.urlparse(BAIDU_TOKEN_URL)
+        url_parts = urlparse.urlparse(TOKEN_URL)
 
         data = self._https_send(url_parts.netloc, url_parts.path, params, 'POST')
 
@@ -85,7 +85,7 @@ class BaiduAPI(object):
             format='json',
         ))
 
-        data = self._https_send(BAIDU_API_DOMAIN, path, params, 'POST')
+        data = self._https_send(API_DOMAIN, path, params, 'POST')
 
         try:
             json_data = json.loads(data)
