@@ -5,10 +5,24 @@
         <meta name="author" content="dantezhu" />
 
         <title>BaiduAppDemo</title>
+
+        <link rel="stylesheet" href="/static/artDialog/skins/default.css">
+
+        <script src="/static/artDialog/artDialog.min.js" type="text/javascript" charset="utf-8"></script>
+
     </head>
 
     <body>
+    {% if not is_login %}
+        <script type="text/javascript">
+            art.dialog({
+                title: '登录',
+                content: 'ok'
+            });
+        </script>
+    {% else %}
         BaiduAppDemo
+    {% endif %}
     </body>
     <script src="http://app.baidu.com/static/appstore/monitor.st"></script>
 </html>

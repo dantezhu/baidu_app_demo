@@ -4,7 +4,7 @@
 import hashlib
 
 from flask import Flask
-from flask import render_template, redirect
+from flask import render_template, redirect, url_for
 from flask import request, session
 
 from baidu_api import BaiduAPI
@@ -34,11 +34,40 @@ def auth_login():
 
     return s_bd_user == bd_user
 
-
-@app.route('/index/')
+@app.route('/index')
 def index():
     is_login = auth_login()
-    return render_template('index.html', is_login=is_login)
+
+    authorize_url = None
+
+    if not is_login:
+        authorize_url = baidu_api.get_authorize_url(
+            'http:%s%s' % (request.host, url_for('.login_callback'))
+        )
+
+    return render_template('index.html', is_login=is_login, authorize_url=authorize_url)
+
+@app.route('/login_callback')
+def login_callback():
+    code = request.values.get('code', None)
+
+    if not code:
+        return u'参数错误'
+
+    token_data = baidu_api.get_token(code)
+    if not token_data:
+        return u'获取token失败'
+
+    access_token = token_data['access_token']
+
+    json_data = baidu_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
+        access_token=access_token
+    ))
+
+    if not json_data:
+        return u'获取用户资料报错'
+
+    return str(json_data)
 
 
 if __name__ == '__main__':
