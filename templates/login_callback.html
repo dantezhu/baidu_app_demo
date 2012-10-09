@@ -5,9 +5,12 @@
     <title>登录成功</title>
 </head>
 <body>
-登录成功，马上将进入应用...
+{{ userinfo.uname }} 欢迎您，马上将进入应用...
 <script type="text/javascript">
-    setTimeout('parent.location.reload();', 2000);
+    function jump_to_index() {
+        parent.location = '{{ url_for('index') }}';
+    }
+    setTimeout('jump_to_index();', 2000);
 </script>
 </body>
 </html>

@@ -20,11 +20,11 @@ app.config.from_object(__name__)
 
 baidu_api = BaiduAPI(BD_APPID, BD_API_KEY, BD_SECRET_KEY)
 
-def get_login_uid():
+def get_login_userid():
     if 'bd_user' not in request.values or 'bd_sig' not in request.values:
         #如果没有参数，那有session也行
-        if 'uid' in session:
-            return session['uid']
+        if 'userid' in session:
+            return session['userid']
         return None
 
     bd_user = request.values['bd_user']
@@ -35,28 +35,38 @@ def get_login_uid():
     if expected_sig != bd_sig:
         return None
 
-    uid = session.get('uid', None)
+    userid = session.get('userid', None)
 
-    if uid != bd_user:
+    if userid != bd_user:
         #说明换了用户了，需要重新授权
         return None
 
-    return uid
+    return userid
 
-@app.route('/index')
-def index():
-    login_uid = get_login_uid()
+@app.route('/login')
+def login():
+    login_userid = get_login_userid()
 
-    session.pop('uid', None)
+    # TODO 要删掉的
+    session.pop('userid', None)
 
     authorize_url = None
 
-    if not login_uid:
+    if not login_userid:
         authorize_url = baidu_api.get_authorize_url(
             'http://%s%s' % (request.host, url_for('.login_callback'))
         )
 
-    return render_template('index.html', login_uid=login_uid, authorize_url=authorize_url)
+    return render_template('login.html', login_userid=login_userid, authorize_url=authorize_url)
+
+@app.route('/index')
+def index():
+    login_userid = get_login_userid()
+
+    if not login_userid:
+        return u'请先登录'
+
+    return render_template('index.html', login_userid=login_userid)
 
 @app.route('/login_callback')
 def login_callback():
@@ -71,16 +81,16 @@ def login_callback():
 
     access_token = token_data['access_token']
 
-    json_data = baidu_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
+    userinfo = baidu_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
         access_token=access_token
     ), method='GET')
 
-    if not json_data:
+    if not userinfo:
         return u'获取用户资料报错'
 
-    session['uid'] = json_data['uid']
+    session['userid'] = userinfo['uid']
 
-    return render_template('login_callback.html')
+    return render_template('login_callback.html', userinfo=userinfo)
 
 
 if __name__ == '__main__':
