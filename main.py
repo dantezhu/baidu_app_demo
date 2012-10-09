@@ -54,7 +54,7 @@ def login_callback():
     if not code:
         return u'参数错误'
 
-    token_data = baidu_api.get_token(code)
+    token_data = baidu_api.get_token(code, redirect_uri='http://%s%s' % (request.host, url_for('.login_callback')))
     if not token_data:
         return u'获取token失败'
 

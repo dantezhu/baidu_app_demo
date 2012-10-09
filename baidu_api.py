@@ -49,7 +49,7 @@ class BaiduAPI(object):
 
         return url
 
-    def get_token(self, code, **kwargs):
+    def get_token(self, code, redirect_uri, **kwargs):
         """
         使用Authorization Code换取Access Token
         """
@@ -57,6 +57,7 @@ class BaiduAPI(object):
         params = dict(
             grant_type='authorization_code',
             code=code,
+            redirect_uri=redirect_uri,
             client_id=self._api_key,
             client_secret=self._secret_key,
         )
