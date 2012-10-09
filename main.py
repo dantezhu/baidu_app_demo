@@ -42,7 +42,7 @@ def index():
 
     if not is_login:
         authorize_url = baidu_api.get_authorize_url(
-            'http:%s%s' % (request.host, url_for('.login_callback'))
+            'http://%s%s' % (request.host, url_for('.login_callback'))
         )
 
     return render_template('index.html', is_login=is_login, authorize_url=authorize_url)
@@ -62,7 +62,7 @@ def login_callback():
 
     json_data = baidu_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
         access_token=access_token
-    ))
+    ), method='GET')
 
     if not json_data:
         return u'获取用户资料报错'

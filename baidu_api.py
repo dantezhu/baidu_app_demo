@@ -76,7 +76,7 @@ class BaiduAPI(object):
 
         return json_data
 
-    def call(self, path, params):
+    def call(self, path, params, method='POST'):
         """
         通用API调用接口
         """
@@ -85,7 +85,7 @@ class BaiduAPI(object):
             format='json',
         ))
 
-        data = self._https_send(API_DOMAIN, path, params, 'POST')
+        data = self._https_send(API_DOMAIN, path, params, method)
 
         try:
             json_data = json.loads(data)
