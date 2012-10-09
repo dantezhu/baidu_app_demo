@@ -6,6 +6,7 @@
 </head>
 <body>
 {{ userinfo.uname }} 欢迎您，马上将进入应用...
+<img src="{{ portrait_url }}" alt="头像">
 <script type="text/javascript">
     function jump_to_index() {
         parent.location = '{{ url_for('index') }}';

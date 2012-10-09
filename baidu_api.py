@@ -96,7 +96,6 @@ class BaiduAPI(object):
 
         return json_data
 
-
     def _https_send(self, ip, url_path, params, method='GET'):
         """
         通用https发送接口
@@ -123,3 +122,22 @@ class BaiduAPI(object):
         data = rsp.read()
 
         return data
+
+
+class BaiduUtils(object):
+    """
+    百度的一些工具函数，不必生成实例
+    """
+
+    @classmethod
+    def get_portrait_url(cls, portrait, image_size='large'):
+        """
+        转化头像
+        """
+
+        if image_size == 'small':
+            url = 'http://himg.bdimg.com/sys/portraitn/item/%s.jpg' % portrait
+        else:
+            url = 'http://himg.bdimg.com/sys/portrait/item/%s.jpg' % portrait
+
+        return url

@@ -13,16 +13,8 @@
     </head>
 
     <body>
-    {% if not login_userid %}
-        <script type="text/javascript">
-            art.dialog({
-                title: '登录',
-                content: '<iframe width="600" height="300" src="{{ authorize_url }}"></iframe>'
-            });
-        </script>
-    {% else %}
-        BaiduAppDemo
-    {% endif %}
+        BaiduAppDemo 主页
+        用户ID: {{ login_userid }}
     </body>
     <script src="http://app.baidu.com/static/appstore/monitor.st"></script>
 </html>

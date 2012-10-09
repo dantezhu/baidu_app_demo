@@ -7,7 +7,7 @@ from flask import Flask
 from flask import render_template, redirect, url_for
 from flask import request, session
 
-from baidu_api import BaiduAPI
+from baidu_api import BaiduAPI, BaiduUtils
 
 SECRET_KEY = '2334'
 
@@ -47,21 +47,20 @@ def get_login_userid():
 def login():
     login_userid = get_login_userid()
 
-    # TODO 要删掉的
-    session.pop('userid', None)
-
-    authorize_url = None
-
     if not login_userid:
         authorize_url = baidu_api.get_authorize_url(
             'http://%s%s' % (request.host, url_for('.login_callback'))
         )
+        return render_template('login.html', authorize_url=authorize_url)
 
-    return render_template('login.html', login_userid=login_userid, authorize_url=authorize_url)
+    return redirect(url_for('index'))
 
 @app.route('/index')
 def index():
     login_userid = get_login_userid()
+
+    # TODO 要删掉的
+    session.pop('userid', None)
 
     if not login_userid:
         return u'请先登录'
@@ -90,7 +89,13 @@ def login_callback():
 
     session['userid'] = userinfo['uid']
 
-    return render_template('login_callback.html', userinfo=userinfo)
+    #在正式应用中，这里就应该把用户数据存储下来了。
+    #这里只做演示就不搞数据库了
+
+    portrait_url = BaiduUtils.get_portrait_url(userinfo['portrait'], 'large')
+    print portrait_url
+
+    return render_template('login_callback.html', userinfo=userinfo, portrait_url=portrait_url)
 
 
 if __name__ == '__main__':
