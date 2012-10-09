@@ -59,9 +59,6 @@ def login():
 def index():
     login_userid = get_login_userid()
 
-    # TODO 要删掉的
-    session.pop('userid', None)
-
     if not login_userid:
         return u'请先登录'
 
