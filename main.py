@@ -7,7 +7,7 @@ from flask import Flask
 from flask import render_template, redirect, url_for
 from flask import request, session
 
-from baidu_api import BaiduAPI, BaiduUtils
+from baidu_api import BaiduAPI, BaiduAPIUtils
 
 SECRET_KEY = '2334'
 
@@ -89,7 +89,7 @@ def login_callback():
     #在正式应用中，这里就应该把用户数据存储下来了。
     #这里只做演示就不搞数据库了
 
-    portrait_url = BaiduUtils.get_portrait_url(userinfo['portrait'], 'large')
+    portrait_url = BaiduAPIUtils.get_portrait_url(userinfo['portrait'], 'large')
     print portrait_url
 
     return render_template('login_callback.html', userinfo=userinfo, portrait_url=portrait_url)

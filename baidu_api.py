@@ -124,7 +124,7 @@ class BaiduAPI(object):
         return data
 
 
-class BaiduUtils(object):
+class BaiduAPIUtils(object):
     """
     百度的一些工具函数，不必生成实例
     """
