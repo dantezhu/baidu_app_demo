@@ -21,10 +21,10 @@ app.config.from_object(__name__)
 baidu_api = BaiduAPI(BD_APPID, BD_API_KEY, BD_SECRET_KEY)
 
 def get_login_userid():
+    """
+    登录时的检查登录态
+    """
     if 'bd_user' not in request.values or 'bd_sig' not in request.values:
-        #如果没有参数，那有session也行
-        if 'userid' in session:
-            return session['userid']
         return None
 
     bd_user = request.values['bd_user']
@@ -57,7 +57,7 @@ def login():
 
 @app.route('/index')
 def index():
-    login_userid = get_login_userid()
+    login_userid = session.get('userid', None)
 
     if not login_userid:
         return u'请先登录'
