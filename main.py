@@ -18,7 +18,7 @@ BD_SECRET_KEY = 'Uy2uF4PItYIZcVtIllqAvcn1y2wZiVRO'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-baidu_api = BaiduAPI(BD_APPID, BD_API_KEY, BD_SECRET_KEY)
+bd_api = BaiduAPI(BD_APPID, BD_API_KEY, BD_SECRET_KEY)
 
 def get_login_userid():
     """
@@ -48,7 +48,7 @@ def login():
     login_userid = get_login_userid()
 
     if not login_userid:
-        authorize_url = baidu_api.get_authorize_url(
+        authorize_url = bd_api.get_authorize_url(
             'http://%s%s' % (request.host, url_for('.login_callback'))
         )
         return render_template('login.html', authorize_url=authorize_url)
@@ -71,13 +71,13 @@ def login_callback():
     if not code:
         return u'参数错误'
 
-    token_data = baidu_api.get_token(code, redirect_uri='http://%s%s' % (request.host, url_for('.login_callback')))
+    token_data = bd_api.get_token(code, redirect_uri='http://%s%s' % (request.host, url_for('.login_callback')))
     if not token_data:
         return u'获取token失败'
 
     access_token = token_data['access_token']
 
-    userinfo = baidu_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
+    userinfo = bd_api.call('/rest/2.0/passport/users/getLoggedInUser', dict(
         access_token=access_token
     ), method='GET')
 
