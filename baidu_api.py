@@ -1,5 +1,24 @@
 # -*- coding: utf-8 -*-
 
+"""
+#=============================================================================
+#
+#     FileName: baidu_api.py
+#         Desc: 封装了百度的API，包括: a.oauth2.0登录相关 b.openapi调用相关
+#
+#       Author: dantezhu
+#        Email: zny2008@gmail.com
+#     HomePage: http://www.vimer.cn
+#
+#      Created: 2012-10-12 14:49:49
+#      Version: 0.0.1
+#      History:
+#               0.0.1 | dantezhu | 2012-10-12 14:49:49 | initialization
+#
+#=============================================================================
+"""
+
+
 import urllib
 import httplib
 import urlparse

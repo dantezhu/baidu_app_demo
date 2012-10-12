@@ -1,6 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+#=============================================================================
+#
+#     FileName: main.py
+#         Desc: 百度站内应用的demo
+#
+#       Author: dantezhu
+#        Email: zny2008@gmail.com
+#     HomePage: http://www.vimer.cn
+#
+#      Created: 2012-10-12 14:51:00
+#      Version: 0.0.1
+#      History:
+#               0.0.1 | dantezhu | 2012-10-12 14:51:00 | initialization
+#
+#=============================================================================
+"""
+
+
 import hashlib
 
 from flask import Flask
